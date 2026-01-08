@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "java21-mvn-cln-gh-smvr-bld.fullname" . }}-test-connection"
+  labels:
+    {{- include "java21-mvn-cln-gh-smvr-bld.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "java21-mvn-cln-gh-smvr-bld.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
